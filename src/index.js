@@ -1,6 +1,6 @@
 import debounce from 'lodash.debounce';
 import './css/styles.css';
-import { Notiflix } from 'notiflix';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { fetchCountries } from './fetchCountries';
 
 const DEBOUNCE_DELAY = 300;
@@ -19,14 +19,15 @@ const onInput = debounce(evt => {
   fetchCountries(name)
     .then(choiceCountry)
     .catch(error => console.log(error));
+  container.innerHTML = '';
+  list.innerHTML = '';
+  return;
 }, DEBOUNCE_DELAY);
 
 function choiceCountry(countries) {
   const arrLength = countries.length;
   if (arrLength > 10) {
-    Notiflix.Notify.info(
-      'Too many matches found. Please enter a more specific name.'
-    );
+    Notify.info('Too many matches found. Please enter a more specific name.');
     container.innerHTML = '';
     list.innerHTML = '';
     return;
@@ -39,6 +40,8 @@ function choiceCountry(countries) {
     container.innerHTML = '';
     return renderCountriesAll(countries);
   }
+  container.innerHTML = '';
+  list.innerHTML = '';
 }
 
 function renderCountryInfo(countries) {
